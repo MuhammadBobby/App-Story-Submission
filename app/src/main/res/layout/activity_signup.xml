@@ -13,7 +13,7 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="150dp"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:contentDescription="@string/sign_up_image_desc"
@@ -21,7 +21,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline2"
-            app:srcCompat="@drawable/image_signup" />
+            app:srcCompat="@drawable/register_image" />
 
         <TextView
             android:id="@+id/titleTextView"
