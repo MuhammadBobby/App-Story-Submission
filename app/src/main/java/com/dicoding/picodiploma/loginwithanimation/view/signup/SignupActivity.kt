@@ -86,7 +86,6 @@ class SignupActivity : AppCompatActivity() {
                         showSuccessDialog(email)
                     } else {
                         showErrorDialog(it.exceptionOrNull()?.message)
-                        Toast.makeText(this@SignupActivity, "Registration failed", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

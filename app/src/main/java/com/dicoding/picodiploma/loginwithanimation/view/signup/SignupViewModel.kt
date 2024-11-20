@@ -25,7 +25,6 @@ class SignupViewModel(private val repository: UserRepository) : ViewModel()  {
         viewModelScope.launch {
             try {
                 _registerResult.value = repository.register(name, email, password)
-                Log.d("SignupViewModel", "Registration successful")
             } catch (e: Exception) {
                 Log.d("SignupViewModel", "Registration failed: ${e.message}")
             } finally {
