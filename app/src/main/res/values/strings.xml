@@ -17,5 +17,8 @@
     <string name="sign_up_image_desc">Sign Up</string>
     <string name="welcome_image_desc">Welcome User</string>
     <string name="logo_main_desc">Main Image Logo</string>
+    <string name="tgl_dummy">8 Januari 2024</string>
+    <string name="name_dummy">Name Placeholder</string>
+    <string name="description_dummy">Description Placeholder</string>
 
 </resources>

@@ -14,13 +14,14 @@ import androidx.lifecycle.lifecycleScope
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.dicoding.picodiploma.loginwithanimation.data.pref.UserModel
 import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityLoginBinding
+import com.dicoding.picodiploma.loginwithanimation.services.retrofit.ApiConfig
 import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
 import com.dicoding.picodiploma.loginwithanimation.view.main.MainActivity
 
 @Suppress("DEPRECATION", "CAST_NEVER_SUCCEEDS")
 class LoginActivity : AppCompatActivity() {
     private val viewModel by viewModels<LoginViewModel> {
-        ViewModelFactory.getInstance(this)
+        ViewModelFactory.getInstance(this, ApiConfig.getApiService(""))
     }
     private lateinit var binding: ActivityLoginBinding
 

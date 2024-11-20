@@ -13,13 +13,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.dicoding.picodiploma.loginwithanimation.databinding.ActivitySignupBinding
+import com.dicoding.picodiploma.loginwithanimation.services.retrofit.ApiConfig
 import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
 
 @Suppress("DEPRECATION")
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
     private val signupViewModel: SignupViewModel by viewModels {
-        ViewModelFactory.getInstance(application)
+        ViewModelFactory.getInstance(application, ApiConfig.getApiService(""))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
