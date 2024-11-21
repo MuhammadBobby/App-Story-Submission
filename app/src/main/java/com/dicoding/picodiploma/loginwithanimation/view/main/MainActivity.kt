@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewTreeObserver
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
@@ -125,4 +126,6 @@ class MainActivity : AppCompatActivity() {
 //        startActivity(intent)
         Toast.makeText(this, "Add Story button clicked", Toast.LENGTH_SHORT).show()
     }
+
+
 }

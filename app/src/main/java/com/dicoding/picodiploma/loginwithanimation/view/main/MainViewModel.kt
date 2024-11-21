@@ -27,7 +27,7 @@ class MainViewModel(private val repository: UserRepository, private val storiesR
 
     //get list stories
     suspend fun getListStories() {
-//        _isLoading.value = true
+        _isLoading.value = true
 
         viewModelScope.launch {
             try {
