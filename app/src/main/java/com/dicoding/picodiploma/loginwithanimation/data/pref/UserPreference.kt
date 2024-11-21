@@ -1,6 +1,7 @@
 package com.dicoding.picodiploma.loginwithanimation.data.pref
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -15,33 +16,6 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "se
 
 class UserPreference private constructor(private val dataStore: DataStore<Preferences>) {
 
-    // Fungsi untuk menyimpan data session
-    suspend fun saveSession(user: UserModel) {
-        dataStore.edit { preferences ->
-            preferences[EMAIL_KEY] = user.email
-            preferences[TOKEN_KEY] = user.token
-            preferences[IS_LOGIN_KEY] = true
-        }
-    }
-
-    // Fungsi untuk membaca session
-    fun getSession(): Flow<UserModel> {
-        return dataStore.data.map { preferences ->
-            UserModel(
-                preferences[EMAIL_KEY] ?: "",
-                preferences[TOKEN_KEY] ?: "",
-                preferences[IS_LOGIN_KEY] ?: false
-            )
-        }
-    }
-
-    // Fungsi untuk logout
-    suspend fun logout() {
-        dataStore.edit { preferences ->
-            preferences.clear()
-        }
-    }
-
     // Singleton untuk instance UserPreference
     companion object {
         private val EMAIL_KEY = stringPreferencesKey("email")
@@ -51,12 +25,47 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         @Volatile
         private var INSTANCE: UserPreference? = null
 
-        fun getInstance(context: Context): UserPreference {
+        fun getInstance(dataStore: DataStore<Preferences>): UserPreference {
             return INSTANCE ?: synchronized(this) {
-                val instance = UserPreference(context.dataStore)
+                val instance = UserPreference(dataStore)
                 INSTANCE = instance
                 instance
             }
+        }
+    }
+
+    // Fungsi untuk menyimpan data session
+    suspend fun saveSession(user: UserModel) {
+        dataStore.edit { preferences ->
+            preferences[EMAIL_KEY] = user.email
+            preferences[TOKEN_KEY] = user.token
+            preferences[IS_LOGIN_KEY] = true
+        }
+
+        if(dataStore.data == null) {
+            Log.d("UserPreference", "Session saved: not found")
+        } else {
+            Log.d("UserPreference", "Session saved: ${dataStore.data}")
+        }
+    }
+
+    // Fungsi untuk membaca session
+    fun getSession(): Flow<UserModel> {
+        return dataStore.data.map { preferences ->
+            val email = preferences[EMAIL_KEY] ?: ""
+            val token = preferences[TOKEN_KEY] ?: ""
+            val isLogin = preferences[IS_LOGIN_KEY] ?: false
+
+            UserModel(email, token, isLogin)
+        }
+
+
+    }
+
+    // Fungsi untuk logout
+    suspend fun logout() {
+        dataStore.edit { preferences ->
+            preferences.clear()
         }
     }
 }

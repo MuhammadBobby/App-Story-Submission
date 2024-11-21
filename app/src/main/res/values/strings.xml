@@ -21,5 +21,7 @@
     <string name="name_dummy">Name Placeholder</string>
     <string name="description_dummy">Description Placeholder</string>
     <string name="kembali">Kembali</string>
+    <string name="password_hint">********</string>
+    <string name="email_hint">example@domain.com</string>
 
 </resources>

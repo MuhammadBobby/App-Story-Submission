@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.dicoding.picodiploma.loginwithanimation.data.repositories.StoriesRepository
 import com.dicoding.picodiploma.loginwithanimation.data.repositories.UserRepository
 import com.dicoding.picodiploma.loginwithanimation.di.Injection
-import com.dicoding.picodiploma.loginwithanimation.services.retrofit.ApiService
 import com.dicoding.picodiploma.loginwithanimation.view.detail.DetailViewModel
 import com.dicoding.picodiploma.loginwithanimation.view.login.LoginViewModel
 import com.dicoding.picodiploma.loginwithanimation.view.main.MainViewModel
@@ -20,11 +19,11 @@ class ViewModelFactory(private val repository: UserRepository, private val stori
 
         // Provide an instance of ViewModelFactory
         @JvmStatic
-        fun getInstance(context: Context, apiService: ApiService): ViewModelFactory {
+        fun getInstance(context: Context): ViewModelFactory {
             if (INSTANCE == null) {
                 synchronized(ViewModelFactory::class.java) {
                     INSTANCE = ViewModelFactory(
-                        Injection.provideRepository(context, apiService), // Inject the context properly
+                        Injection.provideRepository(context), // Inject the context properly
                         Injection.provideStoriesRepository(context) // Inject the context properly
                     )
                 }

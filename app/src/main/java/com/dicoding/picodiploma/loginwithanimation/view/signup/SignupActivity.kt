@@ -20,7 +20,7 @@ import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
     private val signupViewModel: SignupViewModel by viewModels {
-        ViewModelFactory.getInstance(application, ApiConfig.getApiService(""))
+        ViewModelFactory.getInstance(application)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

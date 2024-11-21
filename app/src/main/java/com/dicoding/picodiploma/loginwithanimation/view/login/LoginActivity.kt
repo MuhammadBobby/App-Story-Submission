@@ -3,6 +3,7 @@ package com.dicoding.picodiploma.loginwithanimation.view.login
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -13,22 +14,32 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.dicoding.picodiploma.loginwithanimation.data.pref.UserModel
+import com.dicoding.picodiploma.loginwithanimation.data.pref.UserPreference
+import com.dicoding.picodiploma.loginwithanimation.data.pref.dataStore
 import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityLoginBinding
 import com.dicoding.picodiploma.loginwithanimation.services.retrofit.ApiConfig
 import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
 import com.dicoding.picodiploma.loginwithanimation.view.main.MainActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Suppress("DEPRECATION", "CAST_NEVER_SUCCEEDS")
 class LoginActivity : AppCompatActivity() {
     private val viewModel by viewModels<LoginViewModel> {
-        ViewModelFactory.getInstance(this, ApiConfig.getApiService(""))
+        ViewModelFactory.getInstance(this)
     }
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var userPreference: UserPreference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        userPreference = UserPreference.getInstance(this.dataStore)
 
         setupView()
         setupAction()
@@ -85,7 +96,7 @@ class LoginActivity : AppCompatActivity() {
     //observe login result
     private fun observeLoginResult() {
         //observe
-        lifecycleScope.launchWhenStarted{
+        lifecycleScope.launchWhenStarted {
             viewModel.loginResult.collect { result ->
                 result?.let {
                     if (it.isSuccess) {
@@ -107,17 +118,39 @@ class LoginActivity : AppCompatActivity() {
                                 }
 
                                 // save session is login
-                                userModel?.let { it1 -> viewModel.saveSession(it1) }
-
-                                showSuccessDialog(email)
+                                if(userModel != null) {
+                                    viewModel.saveSession(userModel)
+                                    lifecycleScope.launch {
+                                        // Tunggu hingga data selesai tersimpan
+                                        delay(100) // Sesuaikan jeda jika perlu
+                                        checkUserSession()
+                                    }
+                                }
                             } else {
                                 showErrorDialog(response.message)
                             }
                         }
                     } else {
-                        showErrorDialog("Email atau Password salah")
+//                        showErrorDialog("Email atau Password salah")
+                        showErrorDialog(result.exceptionOrNull()?.message)
                     }
                 }
+            }
+        }
+    }
+
+
+    private fun checkUserSession() {
+        lifecycleScope.launch {
+            val userModel = userPreference.getSession().first()
+            if (userModel.token.isNotEmpty()) {
+                if (userModel.isLogin) {
+                   showSuccessDialog(userModel.email)
+                } else {
+                    showErrorDialog("User session not found.")
+                }
+            } else {
+                showErrorDialog("Token not found.")
             }
         }
     }
@@ -144,7 +177,8 @@ class LoginActivity : AppCompatActivity() {
             .setConfirmClickListener { dialog ->
                 dialog.dismissWithAnimation()
                 // goto ke MainActivity
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
                 finish()
             }

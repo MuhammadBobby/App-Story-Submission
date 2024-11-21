@@ -73,11 +73,13 @@
             app:layout_constraintTop_toBottomOf="@+id/emailTextView"
             app:startIconDrawable="@drawable/ic_baseline_email_24">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <com.dicoding.picodiploma.loginwithanimation.customView.EmailCustom
                 android:id="@+id/ed_login_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:textColor="?attr/colorOnPrimary"
+                android:hint="@string/email_hint"
                 android:inputType="textEmailAddress"
                 tools:ignore="SpeakableTextPresentCheck" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -105,10 +107,12 @@
             app:layout_constraintTop_toBottomOf="@+id/passwordTextView"
             app:startIconDrawable="@drawable/ic_baseline_lock_24">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <com.dicoding.picodiploma.loginwithanimation.customView.PasswordCustom
                 android:id="@+id/ed_login_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="?attr/colorOnPrimary"
+                android:hint="@string/password_hint"
                 android:ems="10"
                 android:inputType="textPassword"
                 tools:ignore="SpeakableTextPresentCheck" />

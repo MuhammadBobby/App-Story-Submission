@@ -30,7 +30,7 @@ import java.util.TimeZone
 class DetailStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailStoryBinding
     private val viewModel by viewModels<DetailViewModel> {
-        ViewModelFactory.getInstance(this, ApiConfig.getApiService(""))
+        ViewModelFactory.getInstance(this)
     }
 
     companion object {

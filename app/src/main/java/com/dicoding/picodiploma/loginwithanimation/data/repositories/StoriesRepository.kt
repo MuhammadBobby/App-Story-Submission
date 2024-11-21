@@ -1,10 +1,12 @@
 package com.dicoding.picodiploma.loginwithanimation.data.repositories
 
+import android.util.Log
 import com.dicoding.picodiploma.loginwithanimation.data.pref.UserPreference
 import com.dicoding.picodiploma.loginwithanimation.services.responses.ResponseDetailStory
 import com.dicoding.picodiploma.loginwithanimation.services.responses.ResponseListStory
 import com.dicoding.picodiploma.loginwithanimation.services.responses.Story
 import com.dicoding.picodiploma.loginwithanimation.services.retrofit.ApiService
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.firstOrNull
 
 class StoriesRepository(private val apiService: ApiService, private val userPreference: UserPreference) {
@@ -14,12 +16,15 @@ class StoriesRepository(private val apiService: ApiService, private val userPref
         }
     }
 
-    //list stories
     suspend fun getListStories(): Result<ResponseListStory> {
         return try {
-            //cek token ready or not
-            userPreference.getSession().firstOrNull()?.token ?: throw Exception("Token not found")
+            // Cek apakah token tersedia
+            val token = userPreference.getSession().firstOrNull()?.token
+            if (token.isNullOrEmpty()) {
+                Result.failure<Throwable>(Exception("Token not found"))
+            }
 
+            // Panggil API
             val response = apiService.getStories()
 
             if (response.isSuccessful) {
@@ -30,9 +35,12 @@ class StoriesRepository(private val apiService: ApiService, private val userPref
                     Result.failure(Exception("Response body is null"))
                 }
             } else {
-                Result.failure(Exception("Stories Error with code: ${response.code()}"))
+                // Log response error untuk memudahkan debugging
+                val errorMessage = response.errorBody()?.string() ?: "Unknown error"
+                Result.failure(Exception("Stories Error with code: ${response.code()}, message: $errorMessage"))
             }
         } catch (e: Exception) {
+            // Log exception untuk debugging
             Result.failure(e)
         }
     }
