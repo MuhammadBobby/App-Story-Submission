@@ -23,5 +23,10 @@
     <string name="kembali">Kembali</string>
     <string name="password_hint">********</string>
     <string name="email_hint">example@domain.com</string>
+    <string name="desc">silahkan ketik...</string>
+    <string name="choose_image">Ambil Gambar Dari</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="upload_story">Upload Story</string>
 
 </resources>

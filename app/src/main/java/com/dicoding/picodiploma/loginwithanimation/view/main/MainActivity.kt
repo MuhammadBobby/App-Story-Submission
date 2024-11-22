@@ -3,7 +3,6 @@ package com.dicoding.picodiploma.loginwithanimation.view.main
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -18,10 +17,9 @@ import com.dicoding.picodiploma.loginwithanimation.R
 import com.dicoding.picodiploma.loginwithanimation.data.pref.UserPreference
 import com.dicoding.picodiploma.loginwithanimation.data.pref.dataStore
 import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityMainBinding
-import com.dicoding.picodiploma.loginwithanimation.services.retrofit.ApiConfig
 import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
+import com.dicoding.picodiploma.loginwithanimation.view.add.AddActivity
 import com.dicoding.picodiploma.loginwithanimation.view.welcome.WelcomeActivity
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -59,6 +57,7 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
         } else {
+            @Suppress("DEPRECATION")
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
@@ -140,7 +139,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addStory() {
-        Toast.makeText(this, "Add Story button clicked", Toast.LENGTH_SHORT).show()
         // TODO: Implement Add Story navigation
+        val intent = Intent(this, AddActivity::class.java)
+        startActivity(intent)
     }
 }
