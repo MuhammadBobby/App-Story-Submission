@@ -4,10 +4,16 @@ import android.util.Log
 import com.dicoding.picodiploma.loginwithanimation.data.pref.UserPreference
 import com.dicoding.picodiploma.loginwithanimation.services.responses.ResponseDetailStory
 import com.dicoding.picodiploma.loginwithanimation.services.responses.ResponseListStory
+import com.dicoding.picodiploma.loginwithanimation.services.responses.ResponseRegister
 import com.dicoding.picodiploma.loginwithanimation.services.responses.Story
 import com.dicoding.picodiploma.loginwithanimation.services.retrofit.ApiService
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.firstOrNull
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
 
 class StoriesRepository(private val apiService: ApiService, private val userPreference: UserPreference) {
     companion object {
@@ -68,5 +74,58 @@ class StoriesRepository(private val apiService: ApiService, private val userPref
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+
+    //add
+    suspend fun addNewStory(
+        description: String,
+        imageFile: File,
+        lat: Double?,
+        lon: Double?
+    ): Result<ResponseRegister> {
+        return try {
+            // Ambil token dari session
+            val token = userPreference.getSession().firstOrNull()?.token
+            if (token.isNullOrEmpty()) {
+                return Result.failure(Exception("Token not found"))
+            }
+
+            // Konversi file dan data menjadi multipart
+            val imagePart = imageFile.toMultipartBody()
+            val descriptionPart = description.toRequestBody()
+            val latPart = lat?.toString()?.toRequestBody()
+            val lonPart = lon?.toString()?.toRequestBody()
+
+            // Panggil API untuk upload
+            val response = apiService.addNewStory(
+                "Bearer $token",
+                imagePart,
+                descriptionPart,
+                latPart,
+                lonPart
+            )
+
+            // Cek respons API
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body != null) {
+                    Result.success(body)
+                } else {
+                    Result.failure(Exception("Response body is null"))
+                }
+            } else {
+                val errorMessage = response.errorBody()?.string() ?: "Unknown error"
+                Result.failure(Exception("Error ${response.code()}: $errorMessage"))
+            }
+        } catch (e: Exception) {
+            // Tangani error
+            Result.failure(e)
+        }
+    }
+
+    private fun File.toMultipartBody(): MultipartBody.Part {
+        val requestBody = this.asRequestBody("image/jpeg".toMediaTypeOrNull())
+        return MultipartBody.Part.createFormData("photo", this.name, requestBody)
     }
 }
