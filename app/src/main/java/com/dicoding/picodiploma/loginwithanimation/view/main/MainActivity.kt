@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel> {
-        ViewModelFactory.getInstance(this)
+        ViewModelFactory.getInstance(this, )
     }
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: MainAdapter
@@ -68,14 +68,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun observeSession() {
         viewModel.getSession().observe(this) { user ->
-            Log.d("MainViewModel", "Session observed: $user")
             if (!user.isLogin || user.token.isEmpty()) {
                 // Redirect to WelcomeActivity if not logged in or token is invalid
-                Log.d("MainViewModel", "User not logged in or token is invalid")
                 navigateToWelcomeActivity()
             } else {
                 // Fetch stories if logged in
-                Log.d("MainViewModel", "User is logged in")
                 fetchStories()
             }
         }
@@ -83,7 +80,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun fetchStories() {
         lifecycleScope.launch {
-            delay(500)
             viewModel.getListStories()
         }
     }

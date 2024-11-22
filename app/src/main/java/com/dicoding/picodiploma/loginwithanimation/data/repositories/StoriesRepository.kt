@@ -25,7 +25,7 @@ class StoriesRepository(private val apiService: ApiService, private val userPref
             }
 
             // Panggil API
-            val response = apiService.getStories()
+            val response = apiService.getStories("Bearer $token")
 
             if (response.isSuccessful) {
                 val body = response.body()
@@ -49,9 +49,12 @@ class StoriesRepository(private val apiService: ApiService, private val userPref
     suspend fun getDetailStory(id: String): Result<ResponseDetailStory> {
         return try {
             //cek token ready or not
-            userPreference.getSession().firstOrNull()?.token ?: throw Exception("Token not found")
+            val token = userPreference.getSession().firstOrNull()?.token
+            if (token.isNullOrEmpty()) {
+                Result.failure<Throwable>(Exception("Token not found"))
+            }
 
-            val response = apiService.getDetailStory(id)
+            val response = apiService.getDetailStory("Bearer $token", id)
             if (response.isSuccessful) {
                 val body = response.body()
                 if (body != null) {

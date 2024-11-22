@@ -21,14 +21,7 @@ object Injection {
     // Provide StoriesRepository with Bearer Token
     fun provideStoriesRepository(context: Context): StoriesRepository {
         val userPreference = UserPreference.getInstance(context.dataStore)
-
-        // Getting user session and the token
-        val user = runBlocking { userPreference.getSession().firstOrNull() }
-        if (user == null) {
-            throw IllegalStateException("User not logged in in Injection")
-        }
-        val token = user.token
-        val apiService = ApiConfig.getApiService(token)
+        val apiService = ApiConfig.getApiService()
         return StoriesRepository.getInstance(apiService, userPreference)
     }
 }
