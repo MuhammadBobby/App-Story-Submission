@@ -2,12 +2,10 @@ package com.dicoding.picodiploma.loginwithanimation.data.repositories
 
 import android.util.Log
 import com.dicoding.picodiploma.loginwithanimation.data.pref.UserPreference
+import com.dicoding.picodiploma.loginwithanimation.services.responses.ResponseAddStory
 import com.dicoding.picodiploma.loginwithanimation.services.responses.ResponseDetailStory
 import com.dicoding.picodiploma.loginwithanimation.services.responses.ResponseListStory
-import com.dicoding.picodiploma.loginwithanimation.services.responses.ResponseRegister
-import com.dicoding.picodiploma.loginwithanimation.services.responses.Story
 import com.dicoding.picodiploma.loginwithanimation.services.retrofit.ApiService
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.firstOrNull
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -81,9 +79,9 @@ class StoriesRepository(private val apiService: ApiService, private val userPref
     suspend fun addNewStory(
         description: String,
         imageFile: File,
-        lat: Double?,
-        lon: Double?
-    ): Result<ResponseRegister> {
+        lat: Double? = null,
+        lon: Double? = null
+    ): Result<ResponseAddStory> {
         return try {
             // Ambil token dari session
             val token = userPreference.getSession().firstOrNull()?.token
@@ -97,16 +95,8 @@ class StoriesRepository(private val apiService: ApiService, private val userPref
             val latPart = lat?.toString()?.toRequestBody()
             val lonPart = lon?.toString()?.toRequestBody()
 
-            // Panggil API untuk upload
-            val response = apiService.addNewStory(
-                "Bearer $token",
-                imagePart,
-                descriptionPart,
-                latPart,
-                lonPart
-            )
-
-            // Cek respons API
+            // Panggil API
+            val response = apiService.addNewStory("Bearer $token", imagePart, descriptionPart, latPart, lonPart)
             if (response.isSuccessful) {
                 val body = response.body()
                 if (body != null) {
@@ -115,8 +105,7 @@ class StoriesRepository(private val apiService: ApiService, private val userPref
                     Result.failure(Exception("Response body is null"))
                 }
             } else {
-                val errorMessage = response.errorBody()?.string() ?: "Unknown error"
-                Result.failure(Exception("Error ${response.code()}: $errorMessage"))
+                Result.failure(Exception("Stories Error: ${response.message()}"))
             }
         } catch (e: Exception) {
             // Tangani error

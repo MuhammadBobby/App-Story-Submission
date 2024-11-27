@@ -9,11 +9,10 @@ import com.dicoding.picodiploma.loginwithanimation.data.repositories.StoriesRepo
 import com.dicoding.picodiploma.loginwithanimation.services.responses.ResponseDetailStory
 import kotlinx.coroutines.launch
 
-@Suppress("CAST_NEVER_SUCCEEDS")
 class DetailViewModel(private val repository: StoriesRepository) : ViewModel() {
     //livedata detail result
-    private val _resultDetail = MutableLiveData<ResponseDetailStory>()
-    val resultDetail: LiveData<ResponseDetailStory> = _resultDetail
+    private val _resultDetail = MutableLiveData<ResponseDetailStory?>()
+    val resultDetail: LiveData<ResponseDetailStory?> = _resultDetail
 
     //loading & error
     private val _isLoading = MutableLiveData<Boolean>()
@@ -33,7 +32,7 @@ class DetailViewModel(private val repository: StoriesRepository) : ViewModel() {
                 if (response.isSuccess) {
                     val body = response.getOrNull()
                     if (body != null) {
-                        _resultDetail.value = body as ResponseDetailStory
+                        _resultDetail.value = body
                     } else {
                         _errorMessage.value = "Response body is null"
                     }

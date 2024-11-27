@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel> {
-        ViewModelFactory.getInstance(this, )
+        ViewModelFactory.getInstance(this)
     }
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: MainAdapter

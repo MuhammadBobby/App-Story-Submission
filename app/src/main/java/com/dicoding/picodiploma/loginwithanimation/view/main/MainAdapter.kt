@@ -23,12 +23,12 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
-class MainAdapter() :
+class MainAdapter :
     RecyclerView.Adapter<MainAdapter.StoryViewHolder>() {
 
     private val stories = mutableListOf<ListStoryItem>()
 
-    class StoryViewHolder(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
+    class StoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val storyImage: ImageView = view.findViewById(R.id.iv_item_photo)
         private val storyName: TextView = view.findViewById(R.id.tv_item_name)
         private val storyDescription: TextView = view.findViewById(R.id.tv_item_description)

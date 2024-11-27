@@ -1,5 +1,6 @@
 package com.dicoding.picodiploma.loginwithanimation.services.retrofit
 
+import com.dicoding.picodiploma.loginwithanimation.services.responses.ResponseAddStory
 import com.dicoding.picodiploma.loginwithanimation.services.responses.ResponseDetailStory
 import com.dicoding.picodiploma.loginwithanimation.services.responses.ResponseListStory
 import com.dicoding.picodiploma.loginwithanimation.services.responses.ResponseLogin
@@ -60,7 +61,7 @@ interface ApiService {
         @Part("description") description: RequestBody,
         @Part("lat") lat: RequestBody? = null,
         @Part("lon") lon: RequestBody? = null
-    ) : Response<ResponseRegister>
+    ) : Response<ResponseAddStory>
 
 
 }

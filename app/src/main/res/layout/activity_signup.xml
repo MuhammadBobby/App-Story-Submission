@@ -97,7 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?attr/colorOnPrimary"
-                android:hint="example@domain.com"
+                android:hint="@string/email_hint"
                 android:ems="10"
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>

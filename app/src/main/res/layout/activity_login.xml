@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+<!--        image-->
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="0dp"
@@ -51,6 +52,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
+<!--        email-->
         <TextView
             android:id="@+id/emailTextView"
             android:layout_width="wrap_content"
@@ -84,6 +86,7 @@
                 tools:ignore="SpeakableTextPresentCheck" />
         </com.google.android.material.textfield.TextInputLayout>
 
+<!--        pass-->
         <TextView
             android:id="@+id/passwordTextView"
             android:layout_width="wrap_content"

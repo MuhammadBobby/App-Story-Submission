@@ -10,17 +10,12 @@
     <string name="message_login_page">Masukkan data yang sesuai.</string>
     <string name="title_login_page">Kamu sudah memiliki akun? Silahkan Login terlebih dahulu</string>
     <string name="name">Nama</string>
-    <string name="message_main_page">Selamat Belajar di Dicoding.</string>
-    <string name="greeting">Halo %1$s,</string>
-    <string name="logout">Keluar</string>
     <string name="image_desc">Login Image</string>
     <string name="sign_up_image_desc">Sign Up</string>
     <string name="welcome_image_desc">Welcome User</string>
-    <string name="logo_main_desc">Main Image Logo</string>
     <string name="tgl_dummy">8 Januari 2024</string>
     <string name="name_dummy">Name Placeholder</string>
     <string name="description_dummy">Description Placeholder</string>
-    <string name="kembali">Kembali</string>
     <string name="password_hint">********</string>
     <string name="email_hint">example@domain.com</string>
     <string name="desc">silahkan ketik...</string>
@@ -28,5 +23,8 @@
     <string name="gallery">Gallery</string>
     <string name="camera">Camera</string>
     <string name="upload_story">Upload Story</string>
+    <string name="preview_image">Preview Image</string>
+    <string name="tambah_story">Tambah Story</string>
+    <string name="logout">Logout</string>
 
 </resources>
