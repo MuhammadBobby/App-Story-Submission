@@ -121,8 +121,7 @@ class LoginActivity : AppCompatActivity() {
                                 if(userModel != null) {
                                     viewModel.saveSession(userModel)
                                     lifecycleScope.launch {
-                                        // Tunggu hingga data selesai tersimpan
-                                        delay(100) // Sesuaikan jeda jika perlu
+                                        delay(100)
                                         checkUserSession()
                                     }
                                 }

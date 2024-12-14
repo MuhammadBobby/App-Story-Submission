@@ -26,5 +26,7 @@
     <string name="preview_image">Preview Image</string>
     <string name="tambah_story">Tambah Story</string>
     <string name="logout">Logout</string>
+    <string name="title_activity_location">LocationActivity</string>
+    <string name="maps_stories">Maps Stories</string>
 
 </resources>

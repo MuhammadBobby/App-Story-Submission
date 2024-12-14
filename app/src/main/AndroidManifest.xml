@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.dicoding.picodiploma.loginwithanimation">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission
@@ -13,6 +14,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginWithAnimation">
+
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAv-Indtv-6iVDoznXJLMpY_BPm-CDOHNM" />
+
+        <activity
+            android:name=".view.location.LocationActivity"
+            android:exported="false"
+            android:label="@string/title_activity_location" />
         <activity
             android:name=".view.add.AddActivity"
             android:exported="false" />
@@ -45,7 +56,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
     </application>
 

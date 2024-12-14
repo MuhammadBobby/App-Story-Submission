@@ -19,6 +19,7 @@ import com.dicoding.picodiploma.loginwithanimation.data.pref.dataStore
 import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityMainBinding
 import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
 import com.dicoding.picodiploma.loginwithanimation.view.add.AddActivity
+import com.dicoding.picodiploma.loginwithanimation.view.location.LocationActivity
 import com.dicoding.picodiploma.loginwithanimation.view.welcome.WelcomeActivity
 import kotlinx.coroutines.launch
 
@@ -125,6 +126,10 @@ class MainActivity : AppCompatActivity() {
     // Handle menu item clicks (e.g., Add Story and Logout)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.location_story -> {
+                navigateToLocationActivity()
+                true
+            }
             R.id.menu_add_story -> {
                 addStory()
                 true
@@ -138,8 +143,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun navigateToLocationActivity() {
+        val intent = Intent(this, LocationActivity::class.java)
+        startActivity(intent)
+    }
+
     private fun addStory() {
-        // TODO: Implement Add Story navigation
         val intent = Intent(this, AddActivity::class.java)
         startActivity(intent)
     }

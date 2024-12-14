@@ -20,7 +20,7 @@ class StoriesRepository(private val apiService: ApiService, private val userPref
         }
     }
 
-    suspend fun getListStories(): Result<ResponseListStory> {
+    suspend fun getListStories(location: Int? = null,page: Int? = null, size: Int? = null): Result<ResponseListStory> {
         return try {
             // Cek apakah token tersedia
             val token = userPreference.getSession().firstOrNull()?.token
@@ -29,7 +29,7 @@ class StoriesRepository(private val apiService: ApiService, private val userPref
             }
 
             // Panggil API
-            val response = apiService.getStories("Bearer $token")
+            val response = apiService.getStories("Bearer $token", page, size, location)
 
             if (response.isSuccessful) {
                 val body = response.body()

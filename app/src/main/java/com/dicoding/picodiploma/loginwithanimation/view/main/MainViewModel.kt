@@ -18,12 +18,17 @@ class MainViewModel(
     private val _resultStories = MutableLiveData<List<ListStoryItem>>()
     val resultStories: LiveData<List<ListStoryItem>> = _resultStories
 
+    // LiveData untuk detail story
+    private val _resultMaps = MutableLiveData<List<ListStoryItem>>()
+    val resultMaps: LiveData<List<ListStoryItem>> = _resultMaps
+
     // LiveData untuk status loading dan error
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> = _errorMessage
+
 
     // Fungsi untuk mendapatkan daftar cerita
     fun getListStories() {
@@ -45,6 +50,39 @@ class MainViewModel(
                     onSuccess = { body ->
                         _resultStories.value = body.listStory as List<ListStoryItem>
                         Log.d("MainViewModel", "List stories: ${_resultStories.value}")
+                    },
+                    onFailure = { exception ->
+                        _errorMessage.value = "Error: ${exception.message}"
+                        Log.d("MainViewModel", "Error: ${exception.message}")
+                    }
+                )
+            } catch (e: Exception) {
+                _errorMessage.value = "Unexpected error: ${e.message}"
+                Log.d("MainViewModel", "Error: ${e.message}")
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+
+    //fun get maps
+    fun getMapsStories() {
+        _isLoading.value = true
+
+        viewModelScope.launch {
+            val session = userRepository.getSession().firstOrNull()
+            if (session == null || session.token.isEmpty()) {
+                _errorMessage.value = "User not logged in or token missing."
+                _isLoading.value = false
+                return@launch
+            }
+
+            try {
+                val response = storiesRepository.getListStories(1)
+                response.fold(
+                    onSuccess = { body ->
+                        _resultMaps.value = body.listStory as List<ListStoryItem>
                     },
                     onFailure = { exception ->
                         _errorMessage.value = "Error: ${exception.message}"
