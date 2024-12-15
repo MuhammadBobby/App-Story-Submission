@@ -28,5 +28,6 @@
     <string name="logout">Logout</string>
     <string name="title_activity_location">LocationActivity</string>
     <string name="maps_stories">Maps Stories</string>
+    <string name="coba_lagi">Coba lagi</string>
 
 </resources>

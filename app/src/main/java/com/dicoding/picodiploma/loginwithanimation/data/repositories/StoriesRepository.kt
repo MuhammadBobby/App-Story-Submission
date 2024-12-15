@@ -1,7 +1,14 @@
 package com.dicoding.picodiploma.loginwithanimation.data.repositories
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
 import com.dicoding.picodiploma.loginwithanimation.data.pref.UserPreference
+import com.dicoding.picodiploma.loginwithanimation.data.source.PagingStoriesSource
+import com.dicoding.picodiploma.loginwithanimation.services.responses.ListStoryItem
 import com.dicoding.picodiploma.loginwithanimation.services.responses.ResponseAddStory
 import com.dicoding.picodiploma.loginwithanimation.services.responses.ResponseDetailStory
 import com.dicoding.picodiploma.loginwithanimation.services.responses.ResponseListStory
@@ -48,6 +55,18 @@ class StoriesRepository(private val apiService: ApiService, private val userPref
             Result.failure(e)
         }
     }
+
+        fun getListStoriesPaging(): LiveData<PagingData<ListStoryItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                PagingStoriesSource(storiesRepository = this)
+            }
+        ).liveData
+    }
+
 
     //get detail
     suspend fun getDetailStory(id: String): Result<ResponseDetailStory> {
@@ -112,6 +131,41 @@ class StoriesRepository(private val apiService: ApiService, private val userPref
             Result.failure(e)
         }
     }
+
+
+    suspend fun getListPaging(
+        location: Int? = null,
+        page: Int? = null,
+        size: Int? = null
+    ): List<ListStoryItem> {
+        return try {
+            // Ambil token dari UserPreference
+            val token = userPreference.getSession().firstOrNull()?.token
+                ?: throw Exception("Token not found")
+
+            // Panggil API
+            val response = apiService.getStories("Bearer $token", page, size, location)
+
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body != null) {
+                    // Pastikan elemen null dihapus
+                    body.listStory?.filterNotNull() ?: emptyList()
+                } else {
+                    throw Exception("Response body is null")
+                }
+            } else {
+                // Tangani kesalahan respons
+                val errorMessage = response.errorBody()?.string() ?: "Unknown error"
+                throw Exception("Stories Error with code: ${response.code()}, message: $errorMessage")
+            }
+        } catch (e: Exception) {
+            // Lempar ulang exception agar PagingSource dapat menampilkan error
+            throw Exception("Failed to fetch stories: ${e.message}", e)
+        }
+    }
+
+
 
     private fun File.toMultipartBody(): MultipartBody.Part {
         val requestBody = this.asRequestBody("image/jpeg".toMediaTypeOrNull())

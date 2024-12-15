@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.picodiploma.loginwithanimation.R
 import com.dicoding.picodiploma.loginwithanimation.data.pref.UserPreference
 import com.dicoding.picodiploma.loginwithanimation.data.pref.dataStore
+import com.dicoding.picodiploma.loginwithanimation.data.source.LoadingPagingAdapter
 import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityMainBinding
 import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
 import com.dicoding.picodiploma.loginwithanimation.view.add.AddActivity
@@ -28,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
     private lateinit var binding: ActivityMainBinding
-    private lateinit var adapter: MainAdapter
+    private lateinit var adapter: MainAdapterPaging
     private lateinit var userPreference: UserPreference
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,8 +38,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Initialize adapter
-        adapter = MainAdapter()
-        binding.recyclerView.adapter = adapter
+        adapter = MainAdapterPaging()
+        //set with footer
+        binding.recyclerView.adapter = adapter.withLoadStateFooter(
+            footer = LoadingPagingAdapter {
+                adapter.retry()
+            }
+        )
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         userPreference = UserPreference.getInstance(this.dataStore)
 
@@ -73,20 +79,20 @@ class MainActivity : AppCompatActivity() {
                 navigateToWelcomeActivity()
             } else {
                 // Fetch stories if logged in
-                fetchStories()
+//                fetchStories()
             }
         }
     }
 
-    private fun fetchStories() {
-        lifecycleScope.launch {
-            viewModel.getListStories()
-        }
-    }
+//    private fun fetchStories() {
+//        lifecycleScope.launch {
+//            viewModel.pagingStories
+//        }
+//    }
 
     override fun onResume() {
         super.onResume()
-        fetchStories()
+//        fetchStories()
     }
 
     private fun observeViewModel() {
@@ -103,12 +109,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Observe list of stories
-        viewModel.resultStories.observe(this) { listStories ->
-            if (listStories != null) {
-                adapter.setDataStories(listStories)
-            }
+        viewModel.pagingStories.observe(this) {
+            adapter.submitData(lifecycle, it)
         }
     }
+
 
     private fun navigateToWelcomeActivity() {
         val intent = Intent(this, WelcomeActivity::class.java)
