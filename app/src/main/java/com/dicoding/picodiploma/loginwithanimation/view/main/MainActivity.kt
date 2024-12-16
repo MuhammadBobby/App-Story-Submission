@@ -11,7 +11,6 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.picodiploma.loginwithanimation.R
 import com.dicoding.picodiploma.loginwithanimation.data.pref.UserPreference
@@ -22,7 +21,6 @@ import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
 import com.dicoding.picodiploma.loginwithanimation.view.add.AddActivity
 import com.dicoding.picodiploma.loginwithanimation.view.location.LocationActivity
 import com.dicoding.picodiploma.loginwithanimation.view.welcome.WelcomeActivity
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel> {
@@ -77,23 +75,10 @@ class MainActivity : AppCompatActivity() {
             if (!user.isLogin || user.token.isEmpty()) {
                 // Redirect to WelcomeActivity if not logged in or token is invalid
                 navigateToWelcomeActivity()
-            } else {
-                // Fetch stories if logged in
-//                fetchStories()
             }
         }
     }
 
-//    private fun fetchStories() {
-//        lifecycleScope.launch {
-//            viewModel.pagingStories
-//        }
-//    }
-
-    override fun onResume() {
-        super.onResume()
-//        fetchStories()
-    }
 
     private fun observeViewModel() {
         // Observe loading state

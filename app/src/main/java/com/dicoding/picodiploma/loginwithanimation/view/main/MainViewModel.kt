@@ -1,7 +1,11 @@
 package com.dicoding.picodiploma.loginwithanimation.view.main
 
 import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.dicoding.picodiploma.loginwithanimation.data.pref.UserModel
@@ -16,10 +20,6 @@ class MainViewModel(
     private val storiesRepository: StoriesRepository
 ) : ViewModel() {
 
-    // LiveData untuk daftar cerita
-    private val _resultStories = MutableLiveData<List<ListStoryItem>>()
-    val resultStories: LiveData<List<ListStoryItem>> = _resultStories
-
     // LiveData untuk detail story
     private val _resultMaps = MutableLiveData<List<ListStoryItem>>()
     val resultMaps: LiveData<List<ListStoryItem>> = _resultMaps
@@ -31,41 +31,6 @@ class MainViewModel(
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> = _errorMessage
 
-
-    // Fungsi untuk mendapatkan daftar cerita
-//    fun getListStories() {
-//        _isLoading.value = true
-//
-//        viewModelScope.launch {
-//            // Validasi sesi sebelum melakukan operasi
-//            val session = userRepository.getSession().firstOrNull()
-//            if (session == null || session.token.isEmpty()) {
-//                _errorMessage.value = "User not logged in or token missing."
-//                _isLoading.value = false
-//                return@launch
-//            }
-//
-//            try {
-//                // Mengambil data cerita
-//                val response = storiesRepository.getListStories()
-//                response.fold(
-//                    onSuccess = { body ->
-//                        _resultStories.value = body.listStory as List<ListStoryItem>
-//                        Log.d("MainViewModel", "List stories: ${_resultStories.value}")
-//                    },
-//                    onFailure = { exception ->
-//                        _errorMessage.value = "Error: ${exception.message}"
-//                        Log.d("MainViewModel", "Error: ${exception.message}")
-//                    }
-//                )
-//            } catch (e: Exception) {
-//                _errorMessage.value = "Unexpected error: ${e.message}"
-//                Log.d("MainViewModel", "Error: ${e.message}")
-//            } finally {
-//                _isLoading.value = false
-//            }
-//        }
-//    }
 
     //live data from paging source
     val pagingStories: LiveData<PagingData<ListStoryItem>> =

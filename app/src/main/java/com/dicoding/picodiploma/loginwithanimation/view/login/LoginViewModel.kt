@@ -3,8 +3,8 @@ package com.dicoding.picodiploma.loginwithanimation.view.login
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dicoding.picodiploma.loginwithanimation.data.repositories.UserRepository
 import com.dicoding.picodiploma.loginwithanimation.data.pref.UserModel
+import com.dicoding.picodiploma.loginwithanimation.data.repositories.UserRepository
 import com.dicoding.picodiploma.loginwithanimation.services.responses.ResponseLogin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

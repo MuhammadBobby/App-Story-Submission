@@ -1,25 +1,22 @@
 package com.dicoding.picodiploma.loginwithanimation.view.location
 
 import android.content.res.Resources
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.dicoding.picodiploma.loginwithanimation.R
-
-import com.google.android.gms.maps.CameraUpdateFactory
+import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityLocationBinding
+import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
+import com.dicoding.picodiploma.loginwithanimation.view.main.MainViewModel
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityLocationBinding
-import com.dicoding.picodiploma.loginwithanimation.services.responses.ListStoryItem
-import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
-import com.dicoding.picodiploma.loginwithanimation.view.main.MainViewModel
 import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.launch
 
 class LocationActivity : AppCompatActivity(), OnMapReadyCallback {

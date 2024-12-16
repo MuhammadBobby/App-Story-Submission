@@ -2,7 +2,6 @@ package com.dicoding.picodiploma.loginwithanimation.customView
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Canvas
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
